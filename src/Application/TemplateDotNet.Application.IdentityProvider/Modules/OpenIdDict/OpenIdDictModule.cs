@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using OpenIddict.Abstractions;
@@ -7,11 +8,11 @@ using TemplateDotNet.Common.Modules;
 using TemplateDotNet.Common.Options;
 using static OpenIddict.Abstractions.OpenIddictConstants;
 
-namespace TemplateDotNet.Application.IdentityProvider.Modules
+namespace TemplateDotNet.Application.IdentityProvider.Modules.OpenIdDict
 {
     public class OpenIdDictModule : IModule
     {
-        public async Task AddServices(WebApplicationBuilder builder)
+        public Task AddServices(WebApplicationBuilder builder)
         {
             var databaseConnectionStringOptions = builder.GetOptions<DatabaseConnectionStringOptions>();
             var openIdDictGithubProviderOptions = builder.GetOptions<OpenIdDictGithubProviderOptions>();
@@ -34,8 +35,12 @@ namespace TemplateDotNet.Application.IdentityProvider.Modules
                 }).AddClient(options =>
                 {
                     options.AllowAuthorizationCodeFlow();
-                    options.AddDevelopmentEncryptionCertificate();
-                    options.AddDevelopmentSigningCertificate();
+
+                    options.AddDevelopmentEncryptionCertificate()
+                        .AddDevelopmentSigningCertificate();
+
+                    options.UseAspNetCore()
+                        .EnableRedirectionEndpointPassthrough();
 
                     options.UseSystemNetHttp();
 
@@ -54,10 +59,8 @@ namespace TemplateDotNet.Application.IdentityProvider.Modules
                         .SetUserinfoEndpointUris(openIdDictServerOptions.UserInfoEndpointUris)
                         .SetLogoutEndpointUris(openIdDictServerOptions.LogoutEndpointUris);
 
-                    options.RegisterScopes(Scopes.Email, Scopes.Profile, Scopes.Roles);
 
-                    options.AllowAuthorizationCodeFlow()
-                        .AllowRefreshTokenFlow();
+                    options.AllowAuthorizationCodeFlow();
 
                     options.AddDevelopmentEncryptionCertificate()
                         .AddDevelopmentSigningCertificate();
@@ -68,7 +71,14 @@ namespace TemplateDotNet.Application.IdentityProvider.Modules
                 .AddValidation(options =>
                 {
                     options.UseLocalServer();
+                    options.UseAspNetCore();
                 });
+
+            builder.Services.AddAuthorization()
+                .AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+                .AddCookie();
+
+            return Task.CompletedTask;
         }
 
         public async Task UseServices(IApplicationBuilder app)
@@ -99,18 +109,19 @@ namespace TemplateDotNet.Application.IdentityProvider.Modules
                 }
 
                 defaultClient.Permissions.Add(Permissions.Endpoints.Authorization);
+                defaultClient.Permissions.Add(Permissions.Endpoints.Token);
                 defaultClient.Permissions.Add(Permissions.Endpoints.Logout);
                 defaultClient.Permissions.Add(Permissions.GrantTypes.AuthorizationCode);
                 defaultClient.Permissions.Add(Permissions.GrantTypes.RefreshToken);
                 defaultClient.Permissions.Add(Permissions.ResponseTypes.Code);
-                defaultClient.Permissions.Add(Permissions.Scopes.Email);
-                defaultClient.Permissions.Add(Permissions.Scopes.Profile);
-                defaultClient.Permissions.Add(Permissions.Scopes.Roles);
 
                 defaultClient.Requirements.Add(Requirements.Features.ProofKeyForCodeExchange);
 
                 await manager.CreateAsync(defaultClient);
             }
+
+            app.UseAuthentication();
+            app.UseAuthorization();
         }
     }
 }

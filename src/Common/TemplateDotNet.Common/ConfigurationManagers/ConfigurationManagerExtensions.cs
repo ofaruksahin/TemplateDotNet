@@ -14,7 +14,6 @@ namespace TemplateDotNet.Common.ConfigurationManagers
             @this.Services.AddSingleton(options);
 
             IConfigurationBuilder configurationBuilder = @this.Configuration;
-
             configurationBuilder.Add(new VaultConfigurationProviderSource(options));
 
             return @this;

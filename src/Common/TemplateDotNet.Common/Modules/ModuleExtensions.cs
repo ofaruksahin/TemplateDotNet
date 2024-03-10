@@ -27,7 +27,7 @@ namespace TemplateDotNet.Common.Modules
             foreach (var module in modules)
             {
                 var moduleInstance = (IModule)Activator.CreateInstance(module);
-                moduleInstance.AddServices(@this);
+                await moduleInstance.AddServices(@this);
             }
 
             return @this;
