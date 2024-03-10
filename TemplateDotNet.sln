@@ -9,13 +9,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Presentation", "Presentatio
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Application", "Application", "{D51C9173-FB23-4E84-A2C5-9D84318EDF01}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TemplateDotNet.Presentation.IdentityProvider", "src\Presentation\TemplateDotNet.Presentation.IdentityProvider\TemplateDotNet.Presentation.IdentityProvider.csproj", "{D25D41E3-3202-4F65-A35B-658E117F2E6F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TemplateDotNet.Presentation.IdentityProvider", "src\Presentation\TemplateDotNet.Presentation.IdentityProvider\TemplateDotNet.Presentation.IdentityProvider.csproj", "{D25D41E3-3202-4F65-A35B-658E117F2E6F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TemplateDotNet.Application.IdentityProvider", "src\Application\TemplateDotNet.Application.IdentityProvider\TemplateDotNet.Application.IdentityProvider.csproj", "{5BB5057F-5E71-4B3D-9924-D1E0347E0042}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TemplateDotNet.Application.IdentityProvider", "src\Application\TemplateDotNet.Application.IdentityProvider\TemplateDotNet.Application.IdentityProvider.csproj", "{5BB5057F-5E71-4B3D-9924-D1E0347E0042}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Common", "Common", "{66678CEC-C80B-448C-B39C-9B8AA86D1139}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TemplateDotNet.Common", "src\Common\TemplateDotNet.Common\TemplateDotNet.Common.csproj", "{CDF73056-E1D6-4234-8579-64769D6C73E8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TemplateDotNet.Common", "src\Common\TemplateDotNet.Common\TemplateDotNet.Common.csproj", "{CDF73056-E1D6-4234-8579-64769D6C73E8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

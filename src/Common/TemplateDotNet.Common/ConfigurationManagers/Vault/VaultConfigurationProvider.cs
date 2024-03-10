@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Configuration;
+using Newtonsoft.Json.Linq;
 using System.Diagnostics;
 using System.Text.Json;
 using Vault;
@@ -28,10 +29,14 @@ namespace TemplateDotNet.Common.ConfigurationManagers.Vault
                 foreach (var secretKey in secretKeys.Data.Keys)
                 {
                     var kv = client.Secrets.KvV2Read(secretKey, _vaultOptions.Path);
-                    var dictionary = JsonSerializer.Deserialize<Dictionary<string, string>>(kv.Data.Data.ToString());
+                    var jObjects = JObject.Parse(kv.Data.Data.ToString());
 
-                    foreach (var keyValuePair in dictionary)
-                        Data.Add(string.Concat(secretKey, ":", keyValuePair.Key), keyValuePair.Value.ToString());
+                    foreach (var jObject in jObjects)
+                    {
+                        var configKey = string.Concat(secretKey,":",jObject.Key);
+                        Data.Add(configKey, jObject.Value.ToString());
+                    }
+                    Thread.Sleep(100);
                 }
             }
             catch (VaultApiException ex)

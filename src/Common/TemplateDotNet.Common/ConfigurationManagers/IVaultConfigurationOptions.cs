@@ -1,8 +1,7 @@
-﻿using TemplateDotNet.Common.Options;
-
-namespace TemplateDotNet.Common.ConfigurationManagers
+﻿namespace TemplateDotNet.Common.ConfigurationManagers
 {
-    public interface IVaultConfigurationOptions : IOptions
+    public interface IVaultConfigurationOptions
     {
+        public string Key { get;  }
     }
 }

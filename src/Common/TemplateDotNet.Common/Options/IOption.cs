@@ -1,6 +1,6 @@
 ﻿namespace TemplateDotNet.Common.Options
 {
-    public interface IOptions
+    public interface IOption
     {
         public string Key { get;  }
     }
